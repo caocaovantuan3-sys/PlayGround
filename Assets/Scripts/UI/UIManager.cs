@@ -13,6 +13,7 @@ namespace StoneThrowing
         public GameObject settingsPanel;
 
         [Header("Buttons")]
+        public Button playButton;
         public Button pickUpButton;
         public Button throwButton;
         public Button resetButton;
@@ -42,11 +43,14 @@ namespace StoneThrowing
         public Button applyGraphicsButton;
 
         [Header("Mobile")]
-        public RectContextual joystickArea;
+        // joystick area có thể thêm sau nếu cần
 
         void Awake()
         {
             // Bind button events
+            if (playButton != null)
+                playButton.onClick.AddListener(OnPlayClicked);
+
             if (pickUpButton != null)
                 pickUpButton.onClick.AddListener(OnPickUpClicked);
 
@@ -80,6 +84,15 @@ namespace StoneThrowing
             ShowMenu();
             HideSettings();
             UpdateHUD();
+        }
+
+        void OnPlayClicked()
+        {
+            if (GameManager.Instance.currentState == GameState.Menu ||
+                GameManager.Instance.currentState == GameState.Result)
+            {
+                GameManager.Instance.StartPicking();
+            }
         }
 
         void OnPickUpClicked()
@@ -144,7 +157,8 @@ namespace StoneThrowing
             if (menuPanel != null) menuPanel.SetActive(true);
             if (hudPanel != null) hudPanel.SetActive(false);
             if (resultPanel != null) resultPanel.SetActive(false);
-            if (pickUpButton != null) pickUpButton.SetActive(true);
+            if (playButton != null) playButton.SetActive(true);
+            if (pickUpButton != null) pickUpButton.SetActive(false);
             if (throwButton != null) throwButton.SetActive(false);
             if (resetButton != null) resetButton.SetActive(false);
         }

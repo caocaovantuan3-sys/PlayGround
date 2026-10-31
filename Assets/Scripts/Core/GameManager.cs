@@ -165,7 +165,7 @@ namespace StoneThrowing
         public void StartPicking()
         {
             currentState = GameState.Picking;
-            pickUpButton.SetActive(false);
+            pickUpButton.SetActive(true);
             throwButton.SetActive(false);
             hudPanel.SetActive(true);
             menuPanel.SetActive(false);
@@ -174,7 +174,7 @@ namespace StoneThrowing
             if (handTransform != null)
                 handTransform.gameObject.SetActive(true);
 
-            Debug.Log("Đang chờ người chơi nhặt đá...");
+            Debug.Log("Nhấn PICK UP để nhặt đá...");
         }
 
         public void OnStonePicked(GameObject stoneObj, StoneData data)
@@ -182,6 +182,7 @@ namespace StoneThrowing
             currentStoneInstance = stoneObj;
             currentStone = data;
             currentState = GameState.Aiming;
+            pickUpButton.SetActive(false);
             throwButton.SetActive(true);
 
             // Cập nhật camera nhìn về tay cầm đá
