@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#04060d" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="FIREWORKS 3D — VFX 2.0. An interactive cinematic fireworks performance in your browser." />
+    <title>FIREWORKS 3D — VFX 2.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body class="mode-free">
+    <div id="loader" aria-hidden="true">
+      <div class="loader-mark">
+        <i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <div class="loader-title">FIREWORKS <b>3D</b></div>
+      <div class="loader-sub">PREPARING THE NIGHT SKY</div>
+      <div class="loader-track"><span></span></div>
+    </div>
+
+    <canvas id="scene" aria-label="Interactive 3D fireworks scene"></canvas>
+
+    <div class="cinema-bar cinema-bar--top" aria-hidden="true"></div>
+    <div class="cinema-bar cinema-bar--bottom" aria-hidden="true"></div>
+
+    <div id="ui">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="3.1" />
+              <path d="M20 4v8M20 28v8M4 20h8M28 20h8M8.7 8.7l5.7 5.7M25.6 25.6l5.7 5.7M31.3 8.7l-5.7 5.7M14.4 25.6l-5.7 5.7" />
+            </svg>
+          </div>
+          <div class="brand-copy">
+            <div class="brand-name">FIREWORKS <b>3D</b></div>
+            <div class="brand-tag"><span>VFX 2.0</span> · LIVE SKY ENGINE</div>
+          </div>
+        </div>
+
+        <div class="top-actions">
+          <button id="autoToggle" class="auto-toggle is-on" type="button" aria-pressed="true" title="Auto replay">
+            <span class="auto-dot"></span>
+            <span>AUTO</span>
+          </button>
+          <div class="perf-box" aria-label="Renderer performance">
+            <span id="fpsValue">60</span><small>FPS</small>
+            <i></i>
+            <span id="qualityValue">HIGH</span>
+            <span id="particleValue" class="particles">0 PTS</span>
+          </div>
+        </div>
+      </header>
+
+      <nav class="mode-rail" id="modeRail" aria-label="Show modes">
+        <button class="mode-btn is-active" data-mode="free" type="button"><span>01</span>FREE</button>
+        <button class="mode-btn" data-mode="festival" type="button"><span>02</span>FESTIVAL</button>
+        <button class="mode-btn" data-mode="cinematic" type="button"><span>03</span>CINEMATIC</button>
+        <button class="mode-btn" data-mode="city" type="button"><span>04</span>NIGHT CITY</button>
+        <button class="mode-btn" data-mode="lake" type="button"><span>05</span>LAKE</button>
+        <button class="mode-btn" data-mode="galaxy" type="button"><span>06</span>GALAXY</button>
+      </nav>
+
+      <section class="show-meta" aria-live="polite">
+        <div class="eyebrow">
+          <span class="live-dot"></span>
+          <span id="showState">LIVE SKY</span>
+          <span class="eyebrow-sep">/</span>
+          <span id="showClock">00:00</span>
+        </div>
+        <h1 id="showTitle">OPEN SKY</h1>
+        <p id="showSubtitle">No rules. Just light, lake and a sky full of possibility.</p>
+        <div class="meta-line">
+          <span id="locationLabel">MIRROR LAKE · SECTOR 7</span>
+          <span id="modeLabel">FREE MODE</span>
+        </div>
+      </section>
+
+      <div class="show-progress" aria-hidden="true"><span id="progressFill"></span></div>
+
+      <aside class="right-rail" aria-label="Camera and capture">
+        <button class="rail-btn" data-panel="camera" type="button" aria-label="Camera controls" title="Camera">
+          <svg viewBox="0 0 24 24"><path d="M14.5 5.5 12 3 9.5 5.5H5a2 2 0 0 0-2 2V18a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.5a2 2 0 0 0-2-2h-4.5Z"/><circle cx="12" cy="12.6" r="3.6"/></svg>
+          <span>CAMERA</span>
+        </button>
+        <button class="rail-btn" id="photoBtn" type="button" aria-label="Photo mode" title="Photo">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="8.2" cy="10" r="1.5"/><path d="m4 17 5.2-5.1 4.1 4 2.2-2.2L20 18"/></svg>
+          <span>PHOTO</span>
+        </button>
+        <button class="rail-btn" id="recordBtn" type="button" aria-label="Record video" title="Record">
+          <svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="m16 10 5-3v10l-5-3"/></svg>
+          <span>REC</span>
+        </button>
+        <button class="rail-btn" data-panel="settings" type="button" aria-label="Settings" title="Settings">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+          <span>SETTINGS</span>
+        </button>
+      </aside>
+
+      <div class="track-info">
+        <div class="track-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div>
+          <span id="trackTitle">MIDNIGHT OVERTURE</span>
+          <small>ORIGINAL SCORE</small>
+        </div>
+      </div>
+
+      <div class="bottom-area">
+        <div class="quick-row">
+          <button id="createBtn" class="quick-btn" type="button">
+            <span class="plus">+</span> CUSTOM SHOW
+          </button>
+          <button id="slowmoBtn" class="quick-btn" type="button" title="Slow motion">
+            <span class="timer-icon">◔</span> SLO-MO <b>0.25×</b>
+          </button>
+        </div>
+
+        <div class="dock" role="group" aria-label="Playback controls">
+          <button id="playBtn" class="dock-btn dock-btn--play" type="button">
+            <span class="dock-icon" id="playIcon">
+              <svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor"/></svg>
+            </span>
+            <span class="dock-label" id="playLabel">START SHOW</span>
+          </button>
+          <button id="pauseBtn" class="dock-btn" type="button">
+            <span class="dock-icon">
+              <svg viewBox="0 0 24 24"><path d="M8 5h3v14H8zM13 5h3v14h-3z" fill="currentColor"/></svg>
+            </span>
+            <span class="dock-label">PAUSE</span>
+          </button>
+          <button id="replayBtn" class="dock-btn" type="button">
+            <span class="dock-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7L4 8.6V3.5h1.1M4 8.6h5.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="dock-label">REPLAY</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="hint" class="gesture-hint">
+        <span class="hint-line"></span>
+        DRAG TO ORBIT <i></i> PINCH TO ZOOM
+        <span class="hint-line"></span>
+      </div>
+
+      <div id="slowmoBadge" class="slowmo-badge"><span></span> SLOW MOTION <b>0.25×</b></div>
+      <div id="toast" class="toast" role="status"></div>
+
+      <div id="recBadge" class="rec-badge"><span></span> REC <b id="recTime">00:00</b></div>
+
+      <div id="photoHud" class="photo-hud">
+        <div class="photo-title">PHOTO MODE <span>·</span> CLEAN FRAME</div>
+        <div class="photo-actions">
+          <button id="captureBtn" type="button" class="shutter-btn" aria-label="Take photo"><span></span></button>
+          <button id="exitPhotoBtn" type="button" class="photo-exit">EXIT</button>
+        </div>
+        <div class="photo-tip">TAP THE SHUTTER TO CAPTURE · DRAG TO FRAME</div>
+      </div>
+    </div>
+
+    <div id="sheetBackdrop" class="sheet-backdrop"></div>
+    <aside id="sheet" class="sheet" aria-hidden="true">
+      <div class="sheet-grab" aria-hidden="true"></div>
+      <div class="sheet-head">
+        <div>
+          <div class="eyebrow" id="sheetEyebrow">CONTROL DECK</div>
+          <h2 id="sheetTitle">CAMERA</h2>
+        </div>
+        <button id="closeSheetBtn" class="sheet-close" type="button" aria-label="Close panel">×</button>
+      </div>
+
+      <div id="cameraPanel" class="panel">
+        <div class="panel-section">
+          <div class="section-label">VIEW MODE</div>
+          <div class="view-grid" id="viewGrid">
+            <button class="view-btn" data-view="ground" type="button">
+              <span class="view-glyph">◉</span>
+              <b>EYE LEVEL</b>
+              <small>First person</small>
+            </button>
+            <button class="view-btn is-active" data-view="free" type="button">
+              <span class="view-glyph">◌</span>
+              <b>FREE ORBIT</b>
+              <small>360° camera</small>
+            </button>
+            <button class="view-btn" data-view="cinematic" type="button">
+              <span class="view-glyph">✦</span>
+              <b>CINEMATIC</b>
+              <small>Auto director</small>
+            </button>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="row-between">
+            <div>
+              <div class="section-label">AUTO ORBIT</div>
+              <small class="muted">Slow drift around the show</small>
+            </div>
+            <button class="switch" id="autoOrbitSwitch" type="button" aria-pressed="true"><i></i></button>
+          </div>
+          <div class="row-between slider-row">
+            <div>
+              <div class="section-label">ZOOM / FOV</div>
+              <small class="muted">Pinch the scene any time</small>
+            </div>
+            <input id="fovSlider" class="range" type="range" min="32" max="82" value="58" step="1" />
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="section-label">TIME</div>
+          <div class="option-row">
+            <button class="action-tile" id="slowmoPanelBtn" type="button">◔ SLOW MOTION</button>
+            <button class="action-tile" id="resetCameraBtn" type="button">↺ RESET VIEW</button>
+          </div>
+        </div>
+        <div class="panel-note">Drag the sky to look around · two-finger pinch to zoom · double-tap the scene to recenter.</div>
+      </div>
+
+      <div id="settingsPanel" class="panel" hidden>
+        <div class="panel-section">
+          <div class="row-between">
+            <div>
+              <div class="section-label">GRAPHICS QUALITY</div>
+              <small class="muted">Auto adapts particle count & effects</small>
+            </div>
+            <span class="mini-badge" id="qualityBadge">AUTO · HIGH</span>
+          </div>
+          <div class="segment" id="qualitySegment">
+            <button data-quality="auto" class="is-active" type="button">AUTO</button>
+            <button data-quality="low" type="button">LOW</button>
+            <button data-quality="medium" type="button">MED</button>
+            <button data-quality="high" type="button">HIGH</button>
+            <button data-quality="ultra" type="button">ULTRA</button>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="row-between">
+            <div><div class="section-label">FRAME RATE TARGET</div><small class="muted">Device limited · 60 / 90 / 120</small></div>
+            <div class="segment segment--small" id="fpsSegment">
+              <button data-fps="60" class="is-active" type="button">60</button>
+              <button data-fps="90" type="button">90</button>
+              <button data-fps="120" type="button">120</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel-section toggles">
+          <label class="toggle-row"><span><b>Bloom & HDR glow</b><small>Cinematic light spill</small></span><button class="switch is-on" data-toggle="bloom" type="button" aria-pressed="true"><i></i></button></label>
+          <label class="toggle-row"><span><b>Depth of field</b><small>Anamorphic focus falloff</small></span><button class="switch is-on" data-toggle="dof" type="button" aria-pressed="true"><i></i></button></label>
+          <label class="toggle-row"><span><b>Lake reflection</b><small>Real-time planar mirror</small></span><button class="switch is-on" data-toggle="reflection" type="button" aria-pressed="true"><i></i></button></label>
+          <label class="toggle-row"><span><b>Camera shake</b><small>Impact feedback on finale</small></span><button class="switch is-on" data-toggle="shake" type="button" aria-pressed="true"><i></i></button></label>
+        </div>
+        <div class="panel-section">
+          <div class="section-label">AUDIO</div>
+          <div class="row-between slider-row">
+            <span class="muted">Master volume</span>
+            <input id="volumeSlider" class="range" type="range" min="0" max="100" value="72" step="1" />
+          </div>
+          <div class="toggle-grid">
+            <button class="chip-toggle is-on" data-audio="music" type="button">♪ MUSIC</button>
+            <button class="chip-toggle is-on" data-audio="ambient" type="button">◌ NIGHT AIR</button>
+            <button class="chip-toggle is-on" data-audio="sfx" type="button">✦ FIREWORKS</button>
+          </div>
+        </div>
+        <div class="panel-section telemetry">
+          <div><span>DRAW CALLS</span><b id="drawCalls">0</b></div>
+          <div><span>ACTIVE PARTICLES</span><b id="activeParticles">0</b></div>
+          <div><span>RENDER</span><b id="renderResolution">—</b></div>
+        </div>
+      </div>
+
+      <div id="customPanel" class="panel" hidden>
+        <div class="panel-section">
+          <div class="section-label">01 · PICK A SHAPE</div>
+          <div class="shape-grid" id="shapeGrid">
+            <button class="shape-btn is-active" data-shape="peony" type="button"><span>✺</span><b>PEONY</b></button>
+            <button class="shape-btn" data-shape="chrysanthemum" type="button"><span>❋</span><b>CHRYSANTHEMUM</b></button>
+            <button class="shape-btn" data-shape="willow" type="button"><span>⌇</span><b>GOLDEN WILLOW</b></button>
+            <button class="shape-btn" data-shape="heart" type="button"><span>♥</span><b>HEART</b></button>
+            <button class="shape-btn" data-shape="star" type="button"><span>★</span><b>STAR</b></button>
+            <button class="shape-btn" data-shape="ring" type="button"><span>◎</span><b>RING</b></button>
+            <button class="shape-btn" data-shape="multi" type="button"><span>◉</span><b>MULTI LAYER</b></button>
+            <button class="shape-btn" data-shape="rainbow" type="button"><span>◒</span><b>RAINBOW</b></button>
+            <button class="shape-btn" data-shape="glitter" type="button"><span>✷</span><b>GLITTER</b></button>
+            <button class="shape-btn" data-shape="mega" type="button"><span>☄</span><b>MEGA SKY</b></button>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div class="row-between">
+            <div class="section-label">02 · COLOR</div>
+            <label class="color-custom" title="Custom color">
+              <input id="customColor" type="color" value="#ff6b9d" />
+              <span>+</span>
+            </label>
+          </div>
+          <div class="palette" id="palette">
+            <button class="swatch is-active" data-color="#ff5f8f" style="--swatch:#ff5f8f" type="button" aria-label="Rose"></button>
+            <button class="swatch" data-color="#ffd27a" style="--swatch:#ffd27a" type="button" aria-label="Gold"></button>
+            <button class="swatch" data-color="#7ef9ff" style="--swatch:#7ef9ff" type="button" aria-label="Cyan"></button>
+            <button class="swatch" data-color="#b58cff" style="--swatch:#b58cff" type="button" aria-label="Violet"></button>
+            <button class="swatch" data-color="#9dff7a" style="--swatch:#9dff7a" type="button" aria-label="Lime"></button>
+            <button class="swatch" data-color="#ff875f" style="--swatch:#ff875f" type="button" aria-label="Coral"></button>
+            <button class="swatch" data-color="#6e9bff" style="--swatch:#6e9bff" type="button" aria-label="Blue"></button>
+            <button class="swatch" data-color="#ffffff" style="--swatch:#ffffff" type="button" aria-label="White"></button>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div class="row-between">
+            <div class="section-label">03 · DELAY TO NEXT BURST</div>
+            <b class="value-badge" id="delayValue">1.2s</b>
+          </div>
+          <input id="delaySlider" class="range range--wide" type="range" min="0.4" max="4" value="1.2" step="0.1" />
+          <div class="option-row">
+            <button id="fireNowBtn" class="action-tile action-tile--accent" type="button">✦ FIRE NOW</button>
+            <button id="addBurstBtn" class="action-tile" type="button">+ ADD TO SHOW</button>
+          </div>
+        </div>
+
+        <div class="panel-section sequence-section">
+          <div class="row-between">
+            <div class="section-label">YOUR SEQUENCE <span id="sequenceCount" class="count-badge">0</span></div>
+            <button id="clearSequenceBtn" class="text-btn" type="button">CLEAR</button>
+          </div>
+          <div id="sequenceList" class="sequence-list">
+            <div class="sequence-empty">No cues yet. Pick a shape, a color and add the first burst.</div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <button id="playCustomBtn" class="wide-cta" type="button" disabled>
+            <span>▶</span> PLAY MY SHOW
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
