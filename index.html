@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#090b0d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="description" content="TITAN SLAYER — game hành động 3D, ODM gear, Titan AI, chiến đấu bằng song kiếm." />
+  <title>TITAN SLAYER — ODM Combat</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0d10'/%3E%3Cpath d='M13 49 47 15l4 4-34 34z' fill='%23e8eef5'/%3E%3Cpath d='M15 15l34 34-4 4-34-34z' fill='%23c8372d'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="scene" aria-label="Khu vực trò chơi 3D"></canvas>
+    <div id="vignette"></div>
+    <div id="speedlines"></div>
+    <div id="hitflash"></div>
+    <div id="fps-badge" class="hidden">60 FPS</div>
+
+    <!-- BOOT -->
+    <section id="boot" class="screen">
+      <div class="boot-inner">
+        <div class="boot-mark">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M11 53 49 15l4 4L15 57z" fill="currentColor"/><path d="M15 15l38 38-4 4L11 19z" fill="#c8372d"/></svg>
+        </div>
+        <div class="boot-title">TITAN<span>SLAYER</span></div>
+        <div class="boot-sub">ĐANG KHỞI TẠO THẾ GIỚI</div>
+        <div class="boot-track"><div id="boot-bar"></div></div>
+        <div id="boot-status">Nạp địa hình…</div>
+        <div class="boot-tip">MẸO: Dùng móc ODM vào tòa nhà cao, đu người rồi chém gáy Titan.</div>
+      </div>
+    </section>
+
+    <!-- MAIN MENU -->
+    <section id="menu" class="screen hidden">
+      <div class="menu-shade"></div>
+      <header class="menu-head">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M11 53 49 15l4 4L15 57z" fill="currentColor"/><path d="M15 15l38 38-4 4L11 19z" fill="#c8372d"/></svg>
+          <div><strong>TITAN SLAYER</strong><span>ODM COMBAT</span></div>
+        </div>
+        <div class="profile-chip" id="profile-chip">
+          <div class="avatar">S</div>
+          <div><b id="profile-name">Binh nhì</b><span id="profile-rank">Cấp 1 · 0 XP</span></div>
+        </div>
+        <div class="coin-chip"><span class="coin">◈</span><b id="menu-coins">0</b></div>
+      </header>
+
+      <main class="menu-main">
+        <div class="hero-copy">
+          <div class="eyebrow"><i></i> CHIẾN DỊCH TỰ DO</div>
+          <h1>TITAN<span>SLAYER</span></h1>
+          <p>Song kiếm. Móc ODM. Những bức tường cuối cùng.<br/>Săn lùng Titan, bảo vệ thành phố và sống sót.</p>
+          <div class="hero-stats">
+            <div><b id="stat-kills">0</b><span>Titan đã hạ</span></div>
+            <div><b id="stat-story">0/5</b><span>Chương truyện</span></div>
+            <div><b id="stat-best">0</b><span>Kỷ lục sinh tồn</span></div>
+          </div>
+          <div class="hero-actions">
+            <button class="btn primary" id="btn-continue">TIẾP TỤC CHIẾN DỊCH <span>▶</span></button>
+            <button class="btn ghost" data-open="upgrades">NÂNG CẤP TRANG BỊ</button>
+          </div>
+        </div>
+
+        <div class="mode-grid" id="mode-grid">
+          <button class="mode-card story" data-mode="story">
+            <div class="mode-icon">📖</div>
+            <div class="mode-copy"><b>CỐT TRUYỆN</b><span>5 chương · nhiệm vụ có kịch bản</span></div>
+            <div class="mode-go">→</div>
+          </button>
+          <button class="mode-card roam" data-mode="roam">
+            <div class="mode-icon">🧭</div>
+            <div class="mode-copy"><b>TỰ DO</b><span>Khám phá 5 vùng · thu thập thông tin</span></div>
+            <div class="mode-go">→</div>
+          </button>
+          <button class="mode-card survival" data-mode="survival">
+            <div class="mode-icon">☠</div>
+            <div class="mode-copy"><b>SINH TỒN</b><span>Vô tận · đợt Titan tăng dần</span></div>
+            <div class="mode-go">→</div>
+          </button>
+          <button class="mode-card training" data-mode="training">
+            <div class="mode-icon">🎯</div>
+            <div class="mode-copy"><b>HUẤN LUYỆN</b><span>Học ODM · khóa mục tiêu · combo</span></div>
+            <div class="mode-go">→</div>
+          </button>
+          <button class="mode-card squad" data-mode="squad">
+            <div class="mode-icon">⚔</div>
+            <div class="mode-copy"><b>BIỆT ĐỘI 4P</b><span>Bạn + 3 đồng đội AI · sóng Titan</span></div>
+            <div class="mode-go">→</div>
+          </button>
+          <button class="mode-card arsenal" data-open="upgrades">
+            <div class="mode-icon">🛠</div>
+            <div class="mode-copy"><b>KHO VŨ KHÍ</b><span id="arsenal-summary">Kiếm I · Gas 100 · Giáp 0</span></div>
+            <div class="mode-go">→</div>
+          </button>
+        </div>
+      </main>
+
+      <footer class="menu-foot">
+        <div class="foot-hint"><kbd>WASD</kbd> di chuyển <kbd>Space</kbd> nhảy <kbd>RMB</kbd> móc ODM <kbd>LMB</kbd> chém</div>
+        <div class="foot-links">
+          <button data-open="controls">ĐIỀU KHIỂN</button>
+          <button data-open="settings">CÀI ĐẶT</button>
+          <button data-open="story">CHỌN CHƯƠNG</button>
+        </div>
+        <div class="foot-ver">v1.0 · WebGL · Mobile Ready</div>
+      </footer>
+    </section>
+
+    <!-- HUD -->
+    <section id="hud" class="hidden">
+      <div class="hud-top-left">
+        <button id="pause-btn" class="icon-btn" aria-label="Tạm dừng">❚❚</button>
+        <div class="mission-panel">
+          <div class="mission-kicker" id="mission-kicker">CỐT TRUYỆN · CHƯƠNG 1</div>
+          <div class="mission-title" id="mission-title">Ngày đầu huấn luyện</div>
+          <div class="mission-obj"><i></i><span id="mission-obj">Tiêu diệt 3 hình nộm</span></div>
+          <div class="mission-track"><div id="mission-progress"></div></div>
+        </div>
+      </div>
+
+      <div class="hud-top-right">
+        <div class="minimap-wrap">
+          <canvas id="minimap" width="200" height="200"></canvas>
+          <div class="map-compass">N</div>
+          <div class="map-zone" id="map-zone">THÀNH PHỐ</div>
+        </div>
+        <div class="threat-row"><span class="pulse-dot"></span><b id="titan-count">0</b> TITAN <span class="sep">·</span> <b id="wave-label">—</b></div>
+      </div>
+
+      <div class="boss-bar hidden" id="boss-bar">
+        <div class="boss-name" id="boss-name">TITAN BỌC THÉP</div>
+        <div class="boss-track"><div id="boss-fill"></div></div>
+        <div class="boss-sub">Chém vào GÁY để gây sát thương chí mạng</div>
+      </div>
+
+      <div class="vitals">
+        <div class="vital hp"><span>HP</span><div class="track"><div id="hp-fill"></div></div><b id="hp-text">100</b></div>
+        <div class="vital gas"><span>GAS</span><div class="track"><div id="gas-fill"></div></div><b id="gas-text">100</b></div>
+        <div class="vital blade"><span>KIẾM</span><div class="track"><div id="blade-fill"></div></div><b id="blade-text">100</b></div>
+      </div>
+
+      <div class="combo-wrap hidden" id="combo-wrap">
+        <div class="combo-num" id="combo-num">2</div>
+        <div class="combo-label">COMBO <span id="combo-tag">TỐT</span></div>
+        <div class="combo-track"><div id="combo-fill"></div></div>
+      </div>
+
+      <div class="lock-reticle hidden" id="lock-reticle">
+        <div class="reticle-ring"></div>
+        <div class="reticle-diamond"></div>
+        <div class="lock-label" id="lock-label">TITAN 4M</div>
+        <div class="lock-hp"><div id="lock-hp-fill"></div></div>
+        <div class="lock-dist" id="lock-dist">32m</div>
+      </div>
+
+      <div class="crosshair" id="crosshair"><i></i><i></i><i></i><i></i><span></span></div>
+
+      <div class="squad-panel hidden" id="squad-panel">
+        <div class="squad-title">BIỆT ĐỘI</div>
+        <div id="squad-list"></div>
+      </div>
+
+      <div class="zone-banner hidden" id="zone-banner">
+        <span id="zone-name">THÀNH PHỐ</span>
+        <small id="zone-desc">Khu dân cư · nhiều điểm móc</small>
+      </div>
+
+      <div class="objective-beacon hidden" id="objective-beacon"><i></i><span id="beacon-label">MỤC TIÊU</span><b id="beacon-dist">120m</b></div>
+
+      <div class="interact-prompt hidden" id="interact-prompt"><kbd>E</kbd><span id="interact-label">Giải cứu đồng đội</span></div>
+
+      <div class="toasts" id="toasts"></div>
+      <div class="damage-layer" id="damage-layer"></div>
+
+      <div class="dialogue hidden" id="dialogue">
+        <div class="dlg-portrait" id="dlg-portrait">S</div>
+        <div class="dlg-body"><b id="dlg-speaker">SỸ QUAN</b><p id="dlg-text">…</p></div>
+        <button id="dlg-next">TIẾP ▸</button>
+      </div>
+
+      <div class="joystick" id="joystick">
+        <div class="joy-ring"><div class="joy-knob" id="joy-knob"></div></div>
+        <span class="joy-label">DI CHUYỂN</span>
+      </div>
+
+      <div class="touch-actions" id="touch-actions">
+        <button class="act-btn small" data-action="dodge" aria-label="Lộn né"><span>⟲</span><em>NÉ</em></button>
+        <button class="act-btn small" data-action="lock" aria-label="Khóa mục tiêu"><span>◎</span><em>KHÓA</em></button>
+        <button class="act-btn small" data-action="interact" aria-label="Tương tác"><span>✋</span><em>DÙNG</em></button>
+        <button class="act-btn medium" data-action="jump" aria-label="Nhảy"><span>↑</span><em>NHẢY</em></button>
+        <button class="act-btn medium hook" data-action="hook" aria-label="Móc ODM"><span>⌁</span><em>MÓC</em></button>
+        <button class="act-btn medium boost" data-action="boost" aria-label="Tăng tốc"><span>»</span><em>GAS</em></button>
+        <button class="act-btn attack" data-action="attack" aria-label="Chém"><span>⚔</span><em>CHÉM</em></button>
+      </div>
+
+      <div class="desktop-hints">
+        <span><kbd>WASD</kbd> Di chuyển</span>
+        <span><kbd>Space</kbd> Nhảy</span>
+        <span><kbd>RMB</kbd> Móc ODM</span>
+        <span><kbd>Shift</kbd> Gas</span>
+        <span><kbd>LMB</kbd> Chém</span>
+        <span><kbd>Tab</kbd> Khóa</span>
+        <span><kbd>E</kbd> Tương tác</span>
+        <span><kbd>P</kbd> Tạm dừng</span>
+      </div>
+    </section>
+
+    <!-- GENERIC OVERLAY -->
+    <section id="overlay" class="screen hidden">
+      <div class="overlay-card" id="overlay-card"></div>
+    </section>
+
+    <!-- TOUCH ROTATE NOTICE (only landscape recommendation) -->
+    <div id="rotate-hint" class="hidden">Xoay ngang điện thoại để có trải nghiệm tốt nhất</div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
