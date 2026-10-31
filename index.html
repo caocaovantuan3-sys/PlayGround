@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#08090b" />
+  <meta name="description" content="PHONE UNBOXING 3D — trải nghiệm mở hộp smartphone chân thực trong không gian studio 3D." />
+  <title>PHONE UNBOXING 3D — AURA Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="scene" aria-label="Không gian 3D mở hộp điện thoại"></canvas>
+    <div class="ambient-vignette"></div>
+    <div class="ambient-grain"></div>
+
+    <div id="loading" class="loading">
+      <div class="loader-aura">AURA</div>
+      <div class="loader-title">PHONE UNBOXING <em>3D</em></div>
+      <div class="loader-line"><span id="loaderProgress"></span></div>
+      <div id="loaderCopy" class="loader-copy">Đang dựng studio 3D…</div>
+    </div>
+
+    <section id="splash" class="splash">
+      <div class="splash-orbit orbit-a"></div>
+      <div class="splash-orbit orbit-b"></div>
+      <div class="splash-content">
+        <div class="splash-eyebrow"><span></span> AURA STUDIO · IMMERSIVE PRODUCT EXPERIENCE</div>
+        <h1 class="splash-title">
+          <span class="title-line line-1">PHONE</span>
+          <span class="title-line line-2">UNBOXING <em>3D</em></span>
+        </h1>
+        <p class="splash-sub">Một nghi thức mở hộp được tái hiện đến từng chi tiết.<br />Bóc niêm phong. Nâng nắp. Đánh thức thiết bị.</p>
+        <div class="splash-actions">
+          <button id="startExperience" class="btn btn-gold btn-hero">
+            <span>BẮT ĐẦU TRẢI NGHIỆM</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </button>
+          <button id="startFree" class="btn btn-ghost">TỰ DO KHÁM PHÁ</button>
+        </div>
+        <div class="splash-meta">
+          <div><strong>06</strong><span>Dòng máy</span></div>
+          <i></i>
+          <div><strong>08</strong><span>Phụ kiện</span></div>
+          <i></i>
+          <div><strong>06</strong><span>Chế độ chơi</span></div>
+        </div>
+      </div>
+      <div class="splash-footer">
+        <span>ÂM THANH 3D · ĐỒ HỌA PBR · ÁNH SÁNG ĐIỆN ẢNH</span>
+        <span>© 2026 AURA EXPERIENCE LAB</span>
+      </div>
+    </section>
+
+    <header id="topbar" class="chrome topbar">
+      <div class="brand">
+        <div class="brand-mark">A</div>
+        <div class="brand-text">
+          <strong>AURA</strong>
+          <span>PHONE UNBOXING 3D</span>
+        </div>
+      </div>
+      <div id="steps" class="steps" aria-label="Tiến trình trải nghiệm">
+        <div class="step" data-step="0"><i>01</i><span>SEAL</span></div>
+        <div class="step" data-step="1"><i>02</i><span>LID</span></div>
+        <div class="step" data-step="2"><i>03</i><span>PHONE</span></div>
+        <div class="step" data-step="3"><i>04</i><span>ACCESSORIES</span></div>
+        <div class="step" data-step="4"><i>05</i><span>POWER</span></div>
+        <div class="step" data-step="5"><i>06</i><span>SETUP</span></div>
+      </div>
+      <div class="top-actions">
+        <button id="soundToggle" class="icon-btn" title="Âm thanh" aria-label="Bật tắt âm thanh">
+          <svg viewBox="0 0 24 24" class="ic-sound"><path d="M4 9v6h4l5 4V5L8 9H4zM17 8.5a5 5 0 0 1 0 7M19.5 6a8.5 8.5 0 0 1 0 12"/></svg>
+        </button>
+        <button id="nightToggle" class="icon-btn" title="Ngày / Đêm" aria-label="Chuyển ánh sáng ngày đêm">
+          <svg viewBox="0 0 24 24" class="ic-moon"><path d="M20 14.5A8 8 0 0 1 9.5 4 8.2 8.2 0 1 0 20 14.5z"/></svg>
+        </button>
+        <button id="qualityToggle" class="icon-btn quality-btn" title="Chất lượng đồ họa" aria-label="Chất lượng đồ họa"><span>CINEMA</span></button>
+        <button id="fullscreenToggle" class="icon-btn" title="Toàn màn hình" aria-label="Toàn màn hình">
+          <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+        </button>
+        <button id="resetTop" class="icon-btn" title="Bắt đầu lại" aria-label="Bắt đầu lại">
+          <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <nav id="modeRail" class="chrome mode-rail" aria-label="Chế độ chơi">
+      <button class="mode-btn active" data-mode="unboxing"><span class="mode-num">01</span><span class="mode-label">UNBOXING</span><small>Mở hộp</small></button>
+      <button class="mode-btn" data-mode="free"><span class="mode-num">02</span><span class="mode-label">FREE</span><small>Tự do</small></button>
+      <button class="mode-btn" data-mode="collection"><span class="mode-num">03</span><span class="mode-label">COLLECTION</span><small>Sưu tập</small></button>
+      <button class="mode-btn" data-mode="review"><span class="mode-num">04</span><span class="mode-label">REVIEW</span><small>Đánh giá</small></button>
+      <button class="mode-btn" data-mode="camera"><span class="mode-num">05</span><span class="mode-label">CAMERA</span><small>Chụp ảnh</small></button>
+      <button class="mode-btn" data-mode="custom"><span class="mode-num">06</span><span class="mode-label">CUSTOM</span><small>Tùy biến</small></button>
+    </nav>
+
+    <aside id="guideCard" class="chrome glass guide-card">
+      <div class="guide-top">
+        <div class="guide-kicker"><span id="guideStep">01</span> / 06 · <span id="guideKicker">UNBOXING MODE</span></div>
+        <div id="guideTimer" class="guide-timer">SẴN SÀNG</div>
+      </div>
+      <h2 id="guideTitle">Bóc niêm phong</h2>
+      <p id="guideText">Dùng ngón tay kéo một trong hai tem niêm phong trên hộp. Lớp seal sẽ bong ra chân thực — đây là bước không thể bỏ qua.</p>
+      <div id="guideHint" class="guide-hint">
+        <svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+        <span>KÉO TEM NIÊM PHONG LÊN</span>
+      </div>
+      <button id="primaryAction" class="btn btn-gold guide-action" disabled><span>KÉO TEM ĐỂ TIẾP TỤC</span></button>
+      <div class="guide-progress"><span id="guideProgressBar"></span></div>
+    </aside>
+
+    <aside id="infoPanel" class="chrome glass info-panel" aria-live="polite">
+      <button id="infoClose" class="panel-close" aria-label="Đóng">×</button>
+      <div id="infoIcon" class="info-icon">⌁</div>
+      <div id="infoKicker" class="info-kicker">PHỤ KIỆN</div>
+      <h3 id="infoTitle">Củ sạc AURA 45W</h3>
+      <p id="infoDesc"></p>
+      <div id="infoSpecs" class="info-specs"></div>
+      <div class="info-actions">
+        <button id="infoPrimary" class="btn btn-gold">TRẢ VỀ HỘP</button>
+        <button id="infoSecondary" class="btn btn-ghost">CHI TIẾT</button>
+      </div>
+    </aside>
+
+    <div id="holdPower" class="hold-power">
+      <div class="hold-ring"><svg viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="44"/><circle id="holdRing" class="ring-fg" cx="50" cy="50" r="44"/></svg><span>⏻</span></div>
+      <div class="hold-copy"><strong>GIỮ NÚT NGUỒN</strong><small>Giữ 1,5 giây để đánh thức AURA</small></div>
+    </div>
+
+    <div id="bottomBar" class="chrome bottom-bar">
+      <button id="inventoryBtn" class="dock-btn" title="Túi đồ">
+        <svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8zM9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span>INVENTORY</span><b id="inventoryCount">0</b>
+      </button>
+      <div class="dock-sep"></div>
+      <button id="nextBtn" class="dock-btn dock-next" title="Bước tiếp theo">
+        <span>NEXT</span>
+        <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+      </button>
+      <div class="dock-sep"></div>
+      <button id="resetBtn" class="dock-btn" title="Bắt đầu lại">
+        <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+        <span>RESET</span>
+      </button>
+    </div>
+
+    <div id="cameraHud" class="camera-hud">
+      <div class="camera-top">
+        <div class="camera-badge"><i></i> CAMERA MODE</div>
+        <div class="camera-meta"><span id="cameraCounter">00</span> ẢNH</div>
+        <button id="cameraExit" class="camera-exit">THOÁT</button>
+      </div>
+      <div class="viewfinder">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="vf-center"></div>
+        <div class="vf-info"><span>AURA X1 PRO</span><span>200MP · f/1.6 · 1/120</span></div>
+      </div>
+      <div class="camera-bottom">
+        <div class="filter-row">
+          <button class="filter-chip active" data-filter="none">TỰ NHIÊN</button>
+          <button class="filter-chip" data-filter="cinematic">CINEMATIC</button>
+          <button class="filter-chip" data-filter="mono">MONO</button>
+          <button class="filter-chip" data-filter="warm">HOÀNG HÔN</button>
+        </div>
+        <div class="shutter-row">
+          <div id="galleryStrip" class="gallery-strip"></div>
+          <button id="shutterBtn" class="shutter-btn" aria-label="Chụp ảnh"><span></span></button>
+          <button id="galleryBtn" class="camera-mini">GALLERY</button>
+        </div>
+        <div class="zoom-row">
+          <span>1×</span><input id="zoomRange" type="range" min="35" max="130" value="60" /><span>5×</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"><span id="toastText"></span></div>
+    <div id="flash" class="flash"></div>
+    <div id="rotateHint" class="rotate-hint">
+      <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.6-5.7M20 12a8 8 0 0 1-13.6 5.7M17 3v4h-4M7 21v-4h4"/></svg>
+      <span>Xoay ngang để có trải nghiệm tốt nhất</span>
+    </div>
+
+    <div id="modalRoot" class="modal-root">
+      <div class="modal-backdrop" data-close-modal></div>
+
+      <section class="modal" data-modal="inventory">
+        <button class="modal-close" data-close-modal>×</button>
+        <div class="modal-head"><span class="eyebrow">INVENTORY</span><h2>Túi đồ của bạn</h2><p>Những phụ kiện đã được lấy ra khỏi hộp và kiểm tra.</p></div>
+        <div id="inventoryGrid" class="inventory-grid"></div>
+        <div class="modal-note"><span id="inventorySummary">0 / 8 phụ kiện đã kiểm tra</span><button class="btn btn-ghost" data-close-modal>ĐÓNG</button></div>
+      </section>
+
+      <section class="modal modal-wide" data-modal="collection">
+        <button class="modal-close" data-close-modal>×</button>
+        <div class="modal-head"><span class="eyebrow">COLLECTION MODE</span><h2>Bộ sưu tập AURA</h2><p>Sáu dòng smartphone, sáu cá tính. Chọn một mẫu để đưa vào studio.</p></div>
+        <div id="collectionGrid" class="collection-grid"></div>
+        <div class="modal-note"><span>Mọi mẫu đều có thể tùy biến màu sắc, bộ nhớ và cụm camera.</span><button id="collectionCustom" class="btn btn-gold">TÙY BIẾN MẪU ĐANG CHỌN</button></div>
+      </section>
+
+      <section class="modal modal-wide" data-modal="custom">
+        <button class="modal-close" data-close-modal>×</button>
+        <div class="modal-head"><span class="eyebrow">CUSTOM MODE</span><h2>Thiết kế của riêng bạn</h2><p>Thay đổi chất liệu, màu sắc, cấu hình và cả hộp đựng.</p></div>
+        <div class="custom-layout">
+          <div class="custom-preview">
+            <div id="customPreview" class="custom-phone-preview">
+              <div class="cp-camera"></div><div class="cp-logo">AURA</div>
+            </div>
+            <div id="customPreviewName" class="custom-preview-name">AURA X1 PRO</div>
+            <div id="customPreviewSpec" class="custom-preview-spec">12 GB · 512 GB · TITAN XÁM</div>
+          </div>
+          <div class="custom-controls">
+            <div class="control-group">
+              <label>TÊN MẪU</label>
+              <input id="customName" class="text-input" type="text" value="AURA X1 PRO" maxlength="22" />
+            </div>
+            <div class="control-group">
+              <label>MÀU THÂN MÁY</label>
+              <div id="finishSwatches" class="swatches"></div>
+            </div>
+            <div class="control-group">
+              <label>CHẤT LIỆU MẶT LƯNG</label>
+              <div class="segmented" id="finishType">
+                <button data-value="glass" class="active">KÍNH</button><button data-value="matte">NHÁM</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <div class="control-group"><label>RAM</label><div class="segmented" id="ramSelect"><button data-value="8 GB">8 GB</button><button data-value="12 GB" class="active">12 GB</button><button data-value="16 GB">16 GB</button></div></div>
+              <div class="control-group"><label>BỘ NHỚ</label><div class="segmented" id="storageSelect"><button data-value="128 GB">128</button><button data-value="256 GB">256</button><button data-value="512 GB" class="active">512</button><button data-value="1 TB">1TB</button></div></div>
+            </div>
+            <div class="control-row">
+              <div class="control-group"><label>CỤM CAMERA</label><div class="segmented" id="cameraSelect"><button data-value="2">2 ỐNG</button><button data-value="3" class="active">3 ỐNG</button><button data-value="4">4 ỐNG</button></div></div>
+              <div class="control-group"><label>KIỂU MÁY</label><div class="segmented" id="foldSelect"><button data-value="false" class="active">THẲNG</button><button data-value="true">GẬP</button></div></div>
+            </div>
+            <div class="control-row">
+              <div class="control-group"><label>MÀU HỘP</label><div class="color-row" id="boxColorRow"><button data-value="#0b0c10" class="color-dot active" style="--c:#0b0c10"></button><button data-value="#1a2328" class="color-dot" style="--c:#1a2328"></button><button data-value="#3a2b21" class="color-dot" style="--c:#3a2b21"></button><button data-value="#d8d2c5" class="color-dot" style="--c:#d8d2c5"></button></div></div>
+              <div class="control-group"><label>MÀU BÀN</label><div class="color-row" id="tableColorRow"><button data-value="walnut" class="color-dot active" style="--c:#5b3824"></button><button data-value="oak" class="color-dot" style="--c:#b88a5c"></button><button data-value="ebony" class="color-dot" style="--c:#2a201b"></button><button data-value="ash" class="color-dot" style="--c:#c9b69e"></button></div></div>
+            </div>
+            <div class="control-group">
+              <label>PHÔNG NỀN</label>
+              <div class="color-row" id="backdropRow"><button data-value="#2c2b2b" class="color-dot active" style="--c:#2c2b2b"></button><button data-value="#4a4036" class="color-dot" style="--c:#4a4036"></button><button data-value="#1a2430" class="color-dot" style="--c:#1a2430"></button><button data-value="#5c5147" class="color-dot" style="--c:#5c5147"></button></div>
+            </div>
+            <button id="applyCustom" class="btn btn-gold full">ÁP DỤNG THIẾT KẾ</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="modal modal-wide" data-modal="review">
+        <button class="modal-close" data-close-modal>×</button>
+        <div class="modal-head"><span class="eyebrow">REVIEW MODE</span><h2>Đánh giá từng chi tiết</h2><p>Chạm vào các điểm sáng trên thiết bị hoặc chọn một bộ phận để xem cấu tạo.</p></div>
+        <div id="reviewGrid" class="review-grid"></div>
+        <div id="reviewDetail" class="review-detail"><div class="review-empty">Chọn một bộ phận để bắt đầu.</div></div>
+      </section>
+
+      <section class="modal modal-wide" data-modal="gallery">
+        <button class="modal-close" data-close-modal>×</button>
+        <div class="modal-head"><span class="eyebrow">AURA GALLERY</span><h2>Những khung hình của bạn</h2><p>Ảnh được chụp trực tiếp từ studio 3D.</p></div>
+        <div id="galleryGrid" class="gallery-grid"><div class="gallery-empty">Chưa có ảnh nào. Vào CAMERA MODE và nhấn nút chụp.</div></div>
+      </section>
+    </div>
+
+    <div id="uiLoading" class="ui-loading"><span></span></div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
